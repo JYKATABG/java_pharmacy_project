@@ -7,8 +7,7 @@ public class Category {
 
     public Category() {}
 
-    public Category(int id, String category_name, String description) {
-        this.id = id;
+    public Category(String category_name, String description) {
         this.category_name = category_name;
         this.description = description;
     }
@@ -32,4 +31,8 @@ public class Category {
                 throw new IllegalArgumentException
                 ("Description can't exceed 200 characters");}
                 this.description = description; }
+
+    @Override
+    public String toString() {
+        return category_name;}
 }
