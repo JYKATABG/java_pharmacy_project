@@ -10,23 +10,34 @@ public class Sale {
     private int quantity;
     private double total_price;
     private String payment_method;
+    private String paymentMethod;
+    private String clientName;
+    private String medicationName;
 
-    public Sale() {};
+    public Sale() {
+    };
 
-    public Sale
-                (LocalDate sale_date,
-                int quantity, double total_price, String paymentMethod) {
-                    this.quantity = quantity;
-                    this.sale_date = sale_date;
-                    this.quantity = quantity;
-                    this.total_price = total_price;
-                    this.payment_method = payment_method;
+    public Sale(LocalDate sale_date,
+            int quantity, double total_price, String paymentMethod) {
+        this.quantity = quantity;
+        this.sale_date = sale_date;
+        this.quantity = quantity;
+        this.total_price = total_price;
+        this.payment_method = payment_method;
     }
 
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
+    public int getId() {
+        return id;
+    }
 
-    public int getClientId() { return client_id; }
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getClientId() {
+        return client_id;
+    }
+
     public void setClientId(int client_id) {
         if (client_id <= 0) {
             throw new IllegalArgumentException("Invalid client.");
@@ -34,7 +45,10 @@ public class Sale {
         this.client_id = client_id;
     }
 
-    public int getMedicationId() { return medication_id; }
+    public int getMedicationId() {
+        return medication_id;
+    }
+
     public void setMedicationId(int medication_id) {
         if (medication_id <= 0) {
             throw new IllegalArgumentException("Invalid medicine.");
@@ -42,26 +56,61 @@ public class Sale {
         this.medication_id = medication_id;
     }
 
-    public LocalDate getSaleDate() { return sale_date; }
-    public void setSaleDate(LocalDate sale_date) { this.sale_date = sale_date; }
+    public LocalDate getSaleDate() {
+        return sale_date;
+    }
 
-    public int getQuantity() { return quantity; }
-    public void setQuantity(int quantity) { this.quantity = quantity; }
+    public void setSaleDate(LocalDate sale_date) {
+        this.sale_date = sale_date;
+    }
 
-    public double getTotalPrice() { return total_price; }
-    public void setTotalPrice(double total_price) { this.total_price = total_price; }
+    public int getQuantity() {
+        return quantity;
+    }
 
-    public String getPaymentMethod() { return payment_method; }
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public double getTotalPrice() {
+        return total_price;
+    }
+
+    public void setTotalPrice(double total_price) {
+        this.total_price = total_price;
+    }
+
+    public String getPaymentMethod() {
+        return payment_method;
+    }
+
     public void setPaymentMethod(String payment_method) {
         if (payment_method != null && payment_method.length() > 20) {
             throw new IllegalArgumentException("Can't exceed 20 characters.");
         }
         this.payment_method = payment_method;
     }
+
+    public String getClientName() {
+        return clientName;
+    }
+
+    public void setClientName(String clientName) {
+        this.clientName = clientName;
+    }
+
+    public String getMedicationName() {
+        return medicationName;
+    }
+
+    public void setMedicationName(String medicationName) {
+        this.medicationName = medicationName;
+    }
+
     @Override
     public String toString() {
         return "Sale #" + id + " | Client ID: " + client_id +
-               " | Medicine ID: " + medication_id + " | Quantity: " +
-               quantity + " | " + total_price + " €. | " + sale_date;
+                " | Medicine ID: " + medication_id + " | Quantity: " +
+                quantity + " | " + total_price + " €. | " + sale_date;
     }
 }
