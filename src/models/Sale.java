@@ -43,16 +43,16 @@ public class Sale {
     }
 
     public LocalDate getSaleDate() { return sale_date; }
-    public void setSaleDate() { this.sale_date = sale_date; }
+    public void setSaleDate(LocalDate sale_date) { this.sale_date = sale_date; }
 
     public int getQuantity() { return quantity; }
-    public void setQuantity() { this.quantity = quantity; }
+    public void setQuantity(int quantity) { this.quantity = quantity; }
 
     public double getTotalPrice() { return total_price; }
-    public void setTotalPrice() { this.total_price = total_price; }
+    public void setTotalPrice(double total_price) { this.total_price = total_price; }
 
     public String getPaymentMethod() { return payment_method; }
-    public void setPaymentMethod() {
+    public void setPaymentMethod(String payment_method) {
         if (payment_method != null && payment_method.length() > 20) {
             throw new IllegalArgumentException("Can't exceed 20 characters.");
         }

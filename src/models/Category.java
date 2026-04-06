@@ -26,7 +26,7 @@ public class Category {
                 this.category_name = category_name.trim(); }
 
     public String getDescription() { return description; }
-    public void setDescription()
+    public void setDescription(String description)
                 {if(description != null && description.length() > 200) {
                 throw new IllegalArgumentException
                 ("Description can't exceed 200 characters");}

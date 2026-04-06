@@ -1,4 +1,4 @@
-package daos;
+package db;
 
 import java.io.File;
 import java.io.IOException;
