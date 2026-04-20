@@ -60,17 +60,17 @@ public class SalePanel extends JPanel {
 
         JPanel formPanel = new JPanel(new GridLayout(0, 2, 8, 8));
         formPanel.setPreferredSize(new Dimension(300, 0));
-        formPanel.add(new JLabel("Klient:"));
+        formPanel.add(new JLabel("Клиент:"));
         formPanel.add(clientCombo);
-        formPanel.add(new JLabel("Lekarstvo:"));
+        formPanel.add(new JLabel("Лекарство:"));
         formPanel.add(medCombo);
-        formPanel.add(new JLabel("Data (yyyy-MM-dd):"));
+        formPanel.add(new JLabel("Дата (yyyy-MM-dd):"));
         formPanel.add(dateField);
-        formPanel.add(new JLabel("Broiki:"));
+        formPanel.add(new JLabel("Бройки:"));
         formPanel.add(quantityField);
-        formPanel.add(new JLabel("Obshta suma:"));
+        formPanel.add(new JLabel("Обща сума:"));
         formPanel.add(priceField);
-        formPanel.add(new JLabel("Nachyn plashchane:"));
+        formPanel.add(new JLabel("Начин на плащане:"));
         formPanel.add(paymentCombo);
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 6, 0));
@@ -79,7 +79,7 @@ public class SalePanel extends JPanel {
         buttonPanel.add(clearButton);
 
         JPanel searchPanel = new JPanel(new BorderLayout(6, 0));
-        searchPanel.add(new JLabel("Tyrsi po klient:"), BorderLayout.WEST);
+        searchPanel.add(new JLabel("Търси по клиент:"), BorderLayout.WEST);
         searchPanel.add(searchField, BorderLayout.CENTER);
         searchPanel.add(searchButton, BorderLayout.EAST);
 
@@ -152,7 +152,7 @@ public class SalePanel extends JPanel {
         String dateStr = dateField.getText().trim();
 
         if (qStr.isEmpty() || priceStr.isEmpty() || dateStr.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Popylni vsički zadylzhitelni poleta!", "Greshka",
+            JOptionPane.showMessageDialog(this, "Попълни всички задължителни полета!", "Грешка",
                     JOptionPane.ERROR_MESSAGE);
             return;
         }
@@ -182,18 +182,18 @@ public class SalePanel extends JPanel {
             loadAll();
             clearForm();
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, "Proveri formata na datata i chislata!", "Greshka",
+            JOptionPane.showMessageDialog(this, "Провери формата на датата и числата!", "Грешка",
                     JOptionPane.ERROR_MESSAGE);
         }
     }
 
     private void delete() {
         if (selectedId == -1) {
-            JOptionPane.showMessageDialog(this, "Izberi prodazhba ot tablicata!", "Greshka",
+            JOptionPane.showMessageDialog(this, "Избери продажба от таблицата!", "Грешка",
                     JOptionPane.WARNING_MESSAGE);
             return;
         }
-        int confirm = JOptionPane.showConfirmDialog(this, "Iztrii tazi prodazhba?", "Potvyrdi",
+        int confirm = JOptionPane.showConfirmDialog(this, "Искаш ли да изтриеш тази продажба?", "Потвърждение",
                 JOptionPane.YES_NO_OPTION);
         if (confirm == JOptionPane.YES_OPTION) {
             dao.delete(selectedId);
