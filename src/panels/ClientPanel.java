@@ -51,15 +51,15 @@ public class ClientPanel extends JPanel {
 
         JPanel formPanel = new JPanel(new GridLayout(0, 2, 8, 8));
         formPanel.setPreferredSize(new Dimension(290, 0));
-        formPanel.add(new JLabel("Ime:"));
+        formPanel.add(new JLabel("Име:"));
         formPanel.add(firstNameField);
-        formPanel.add(new JLabel("Familiya:"));
+        formPanel.add(new JLabel("Фамилия:"));
         formPanel.add(lastNameField);
-        formPanel.add(new JLabel("Telefon:"));
+        formPanel.add(new JLabel("Телефон:"));
         formPanel.add(phoneField);
-        formPanel.add(new JLabel("Iмейл:"));
+        formPanel.add(new JLabel("E-mail:"));
         formPanel.add(emailField);
-        formPanel.add(new JLabel("Rozhd. data (yyyy-MM-dd):"));
+        formPanel.add(new JLabel("Рожд. дата (yyyy-MM-dd):"));
         formPanel.add(birthDateField);
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 6, 0));
@@ -68,7 +68,7 @@ public class ClientPanel extends JPanel {
         buttonPanel.add(clearButton);
 
         JPanel searchPanel = new JPanel(new BorderLayout(6, 0));
-        searchPanel.add(new JLabel("Tyrsi po familiya:"), BorderLayout.WEST);
+        searchPanel.add(new JLabel("Търси по фамилия:"), BorderLayout.WEST);
         searchPanel.add(searchField, BorderLayout.CENTER);
         searchPanel.add(searchButton, BorderLayout.EAST);
 
@@ -126,7 +126,7 @@ public class ClientPanel extends JPanel {
         String phone = phoneField.getText().trim();
 
         if (firstName.isEmpty() || lastName.isEmpty() || phone.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Ime, familiya i telefon sa zadylzhitelni!", "Greshka",
+            JOptionPane.showMessageDialog(this, "Име, фамилия и телефон са задължителни!", "Грешка",
                     JOptionPane.ERROR_MESSAGE);
             return;
         }
@@ -142,7 +142,7 @@ public class ClientPanel extends JPanel {
             try {
                 c.setBirthDate(LocalDate.parse(bdStr));
             } catch (Exception ex) {
-                JOptionPane.showMessageDialog(this, "Datata tryabva da e v format yyyy-MM-dd!", "Greshka",
+                JOptionPane.showMessageDialog(this, "Датата трябва да е във формат yyyy-MM-dd!", "Грешка",
                         JOptionPane.ERROR_MESSAGE);
                 return;
             }
@@ -161,10 +161,11 @@ public class ClientPanel extends JPanel {
 
     private void delete() {
         if (selectedId == -1) {
-            JOptionPane.showMessageDialog(this, "Izberi klient ot tablicata!", "Greshka", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Избери клиент от таблицата", "Грешка", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        int confirm = JOptionPane.showConfirmDialog(this, "Iztrii tozi klient?", "Potvyrdi", JOptionPane.YES_NO_OPTION);
+        int confirm = JOptionPane.showConfirmDialog(this, "Искаш ли да изтриеш този клиент?", "Потвърждение",
+                JOptionPane.YES_NO_OPTION);
         if (confirm == JOptionPane.YES_OPTION) {
             dao.delete(selectedId);
             loadAll();
