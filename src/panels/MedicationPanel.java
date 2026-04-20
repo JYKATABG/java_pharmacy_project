@@ -149,7 +149,7 @@ public class MedicationPanel extends JPanel {
         String stockStr = stockField.getText().trim();
 
         if (name.isEmpty() || mfr.isEmpty() || priceStr.isEmpty() || stockStr.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Popylni vsički zadylzhitelni poleta!", "Greshka",
+            JOptionPane.showMessageDialog(this, "Попълни всички задължителни полета!", "Грешка",
                     JOptionPane.ERROR_MESSAGE);
             return;
         }
@@ -177,18 +177,19 @@ public class MedicationPanel extends JPanel {
             loadAll();
             clearForm();
         } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(this, "Cenata i nalichnostta tryabva da sa chisla!", "Greshka",
+            JOptionPane.showMessageDialog(this, "Цената и наличността трябва да са числа!", "Грешка",
                     JOptionPane.ERROR_MESSAGE);
         }
     }
 
     private void delete() {
         if (selectedId == -1) {
-            JOptionPane.showMessageDialog(this, "Izberi lekarstvo ot tablicata!", "Greshka",
+            JOptionPane.showMessageDialog(this, "Избери лекарство от таблицата!", "Грешка",
                     JOptionPane.WARNING_MESSAGE);
             return;
         }
-        int c = JOptionPane.showConfirmDialog(this, "Iztrii tova lekarstvo?", "Potvyrdi", JOptionPane.YES_NO_OPTION);
+        int c = JOptionPane.showConfirmDialog(this, "Искаш ли да изтриеш това лекарство?", "Potvyrdi",
+                JOptionPane.YES_NO_OPTION);
         if (c == JOptionPane.YES_OPTION) {
             dao.delete(selectedId);
             loadAll();
