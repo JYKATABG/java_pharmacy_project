@@ -188,7 +188,7 @@ public class MedicationPanel extends JPanel {
                     JOptionPane.WARNING_MESSAGE);
             return;
         }
-        int c = JOptionPane.showConfirmDialog(this, "Искаш ли да изтриеш това лекарство?", "Potvyrdi",
+        int c = JOptionPane.showConfirmDialog(this, "Искаш ли да изтриеш това лекарство?", "Потвърждание",
                 JOptionPane.YES_NO_OPTION);
         if (c == JOptionPane.YES_OPTION) {
             dao.delete(selectedId);
