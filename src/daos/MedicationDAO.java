@@ -16,7 +16,7 @@ public class MedicationDAO {
                 SELECT m.*, c.category_name
                 FROM medications m
                 JOIN categories c ON m.category_id = c.id
-                ORDER BY m.name
+                ORDER BY m.id DESC
                 """;
         try (Connection conn = DatabaseManager.getConnection();
                 Statement stmt = conn.createStatement();

@@ -1,7 +1,7 @@
-DROP TABLE IF EXISTS sales;
-DROP TABLE IF EXISTS medications;
-DROP TABLE IF EXISTS clients;
-DROP TABLE IF EXISTS categories;
+CREATE TABLE IF NOT EXISTS sales;
+CREATE TABLE IF NOT EXISTS medications;
+CREATE TABLE IF NOT EXISTS clients;
+CREATE TABLE IF NOT EXISTS categories;
 
 CREATE TABLE categories
 (
@@ -67,9 +67,9 @@ VALUES ('Амоксицилин 500мг', 'Актавис',  8.50,  120, TRUE,  
        ('Еналаприл 10мг',    'КРКА',     5.60,   60, TRUE,  4);
 
 INSERT INTO clients (first_name, last_name, phone, email, birth_date)
-VALUES ('Иван',    'Петров',    '0888123456', 'ivan@email.com',  DATE '1985-03-15'),
-       ('Мария',   'Георгиева', '0888234567', 'maria@email.com', DATE '1992-07-22'),
-       ('Николай', 'Стоянов',   '0888345678', NULL,              DATE '1970-11-08'),
+VALUES ('Иван',    'Петров',    '0888123456', 'ivan@gmail.com',  DATE '1985-03-15'),
+       ('Мария',   'Георгиева', '0888234567', 'maria@gmail.com', DATE '1992-07-22'),
+       ('Николай', 'Стоянов',   '0888345678', 'nikolai@gmail.com', DATE '1970-11-08'),
        ('Елена',   'Димитрова', '0888456789', 'elena@email.com', DATE '2000-01-30');
 
 INSERT INTO sales (client_id, medication_id, sale_date, quantity, total_price, payment_method)

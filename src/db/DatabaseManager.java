@@ -1,13 +1,14 @@
 package db;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.*;
 
 public class DatabaseManager {
-
-    private static final String URL = "jdbc:h2:mem:hoteldb;DB_CLOSE_DELAY=-1";
+    private static final String URL = "jdbc:h2:./pharmacy_db;AUTO_SERVER=TRUE";
     private static final String USER = "sa";
     private static final String PASSWORD = "";
 
@@ -20,22 +21,42 @@ public class DatabaseManager {
         return connection;
     }
 
-    public static void initDatabase() throws SQLException, IOException {
-        String path = DatabaseManager.class
-                .getProtectionDomain()
-                .getCodeSource()
-                .getLocation()
-                .getPath();
-
+    public static void initDatabase() {
         File sqlFile = new File("src/resources/schema.sql");
-        String sql = new String(java.nio.file.Files.readAllBytes(sqlFile.toPath()));
+        if (!sqlFile.exists())
+            return;
 
-        try (Statement stmt = getConnection().createStatement()) {
-            for (String statement : sql.split(";")) {
-                if (!statement.trim().isEmpty()) {
-                    stmt.execute(statement.trim());
+        try (Connection conn = getConnection();
+                Statement stmt = conn.createStatement();
+                BufferedReader reader = new BufferedReader(new FileReader(sqlFile))) {
+
+            StringBuilder sb = new StringBuilder();
+            String line;
+
+            while ((line = reader.readLine()) != null) {
+                if (line.trim().isEmpty() || line.trim().startsWith("--"))
+                    continue;
+
+                sb.append(line);
+
+                if (line.contains(";")) {
+                    stmt.execute(sb.toString());
+                    sb.setLength(0);
                 }
             }
+            System.out.println("Базата е готова!");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static boolean isDatabaseAlreadyInitialized() {
+        try (Connection conn = getConnection();
+                ResultSet rs = conn.getMetaData().getTables(null, null, "CATEGORIES", null)) {
+            return rs.next();
+        } catch (SQLException e) {
+            return false;
         }
     }
 }

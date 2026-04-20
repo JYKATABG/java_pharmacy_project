@@ -17,7 +17,7 @@ public class SaleDAO {
                 FROM sales s
                 JOIN clients c ON s.client_id = c.id
                 JOIN medications m ON s.medication_id = m.id
-                ORDER BY s.sale_date DESC
+                ORDER BY s.id DESC
                 """;
         try (Connection conn = DatabaseManager.getConnection();
              Statement stmt = conn.createStatement();

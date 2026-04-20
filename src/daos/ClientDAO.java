@@ -11,7 +11,7 @@ public class ClientDAO {
 
     public List<Client> getAll() {
         List<Client> list = new ArrayList<>();
-        String sql = "SELECT * FROM clients ORDER BY last_name";
+        String sql = "SELECT * FROM clients ORDER BY id DESC";
         try (Connection conn = DatabaseManager.getConnection();
                 Statement stmt = conn.createStatement();
                 ResultSet rs = stmt.executeQuery(sql)) {
