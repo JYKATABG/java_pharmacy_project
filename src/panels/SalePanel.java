@@ -48,7 +48,7 @@ public class SalePanel extends JPanel {
         loadComboData();
         loadCategoryCombo();
 
-        String[] columns = { "ID", "Клиент", "Лекарство", "Дата", "Бройки", "Сума", "Плащане" };
+        String[] columns = { "ID", "Клиент", "Лекарство", "Категория", "Дата", "Бройки", "Сума", "Плащане" };
         tableModel = new DefaultTableModel(columns, 0) {
             public boolean isCellEditable(int r, int c) {
                 return false;
@@ -152,6 +152,7 @@ public class SalePanel extends JPanel {
         for (Sale s : list) {
             tableModel.addRow(new Object[] {
                     s.getId(), s.getClientName(), s.getMedicationName(),
+                    s.getCategoryName(),
                     s.getSaleDate().toString(), s.getQuantity(),
                     String.format("%.2f", s.getTotalPrice()),
                     s.getPaymentMethod()

@@ -4,6 +4,7 @@ import db.DatabaseManager;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+
 import models.Sale;
 
 public class SaleDAO {
@@ -13,10 +14,12 @@ public class SaleDAO {
         String sql = """
                 SELECT s.*,
                        c.first_name || ' ' || c.last_name AS client_name,
-                       m.name AS medication_name
+                       m.name AS medication_name,
+                       cat.category_name
                 FROM sales s
                 JOIN clients c ON s.client_id = c.id
                 JOIN medications m ON s.medication_id = m.id
+                JOIN categories cat ON m.category_id = cat.id
                 ORDER BY s.id DESC
                 """;
         try (Connection conn = DatabaseManager.getConnection();
@@ -30,35 +33,12 @@ public class SaleDAO {
         return list;
     }
 
-    public List<Sale> searchByClientName(String keyword) {
-        List<Sale> list = new ArrayList<>();
-        String sql = """
-                SELECT s.*,
-                       c.first_name || ' ' || c.last_name AS client_name,
-                       m.name AS medication_name
-                FROM sales s
-                JOIN clients c ON s.client_id = c.id
-                JOIN medications m ON s.medication_id = m.id
-                WHERE LOWER(c.last_name) LIKE LOWER(?)
-                """;
-        try (Connection conn = DatabaseManager.getConnection();
-                PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, "%" + keyword + "%");
-            ResultSet rs = ps.executeQuery();
-            while (rs.next())
-                list.add(mapRow(rs));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return list;
-    }
-
     public List<Sale> searchByClientNameAndCategory(String firstName, String categoryName) {
         List<Sale> list = new ArrayList<>();
         String sql = """
                 SELECT s.*,
                 c.first_name || ' ' || c.last_name AS client_name,
-                m.name AS medication_name
+                m.name AS medication_name, cat.category_name
                 FROM sales s
                 JOIN clients c ON s.client_id = c.id
                 JOIN medications m ON s.medication_id = m.id
@@ -128,6 +108,9 @@ public class SaleDAO {
         Sale s = new Sale();
         s.setId(rs.getInt("id"));
         s.setClientId(rs.getInt("client_id"));
+        s.setClientName(rs.getString("client_name"));
+        s.setMedicationName(rs.getString("medication_name"));
+        s.setCategoryName(rs.getString("category_name"));
         s.setMedicationId(rs.getInt("medication_id"));
         s.setSaleDate(rs.getDate("sale_date").toLocalDate());
         s.setQuantity(rs.getInt("quantity"));
