@@ -10,9 +10,9 @@ public class Sale {
     private int quantity;
     private double total_price;
     private String payment_method;
-    private String paymentMethod;
     private String clientName;
     private String medicationName;
+    private String categoryName;
 
     public Sale() {
     };
@@ -23,7 +23,6 @@ public class Sale {
         this.sale_date = sale_date;
         this.quantity = quantity;
         this.total_price = total_price;
-        this.payment_method = payment_method;
     }
 
     public int getId() {
@@ -105,6 +104,14 @@ public class Sale {
 
     public void setMedicationName(String medicationName) {
         this.medicationName = medicationName;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 
     @Override

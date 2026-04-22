@@ -1,13 +1,16 @@
 package panels;
 
+import daos.CategoryDAO;
 import daos.ClientDAO;
 import daos.MedicationDAO;
 import daos.SaleDAO;
 import models.Client;
 import models.Medication;
 import models.Sale;
+import models.Category;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.time.LocalDate;
@@ -17,6 +20,7 @@ public class SalePanel extends JPanel {
     private final SaleDAO dao = new SaleDAO();
     private final ClientDAO clientDAO = new ClientDAO();
     private final MedicationDAO medDAO = new MedicationDAO();
+    private final CategoryDAO categoryDAO = new CategoryDAO();
 
     private final DefaultTableModel tableModel;
     private final JTable table;
@@ -28,6 +32,7 @@ public class SalePanel extends JPanel {
     private final JTextField priceField = new JTextField();
     private final JComboBox<String> paymentCombo = new JComboBox<>(new String[] { "кеш", "карта", "здравна каса" });
     private final JTextField searchField = new JTextField();
+    private final JComboBox<Category> categorySearchCombo = new JComboBox<>();
 
     private final JButton saveButton = new JButton("Запази");
     private final JButton deleteButton = new JButton("Изтрий");
@@ -41,8 +46,9 @@ public class SalePanel extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         loadComboData();
+        loadCategoryCombo();
 
-        String[] columns = { "ID", "Клиент", "Лекарство", "Дата", "Бройки", "Сума", "Плащане" };
+        String[] columns = { "ID", "Клиент", "Лекарство", "Категория", "Дата", "Бройки", "Сума", "Плащане" };
         tableModel = new DefaultTableModel(columns, 0) {
             public boolean isCellEditable(int r, int c) {
                 return false;
@@ -61,6 +67,8 @@ public class SalePanel extends JPanel {
         JPanel formPanel = new JPanel(new GridLayout(0, 2, 8, 8));
         formPanel.setPreferredSize(new Dimension(300, 0));
         formPanel.add(new JLabel("Клиент:"));
+        JPanel clientWrapper = new JPanel(new BorderLayout());
+        clientWrapper.add(clientCombo, BorderLayout.NORTH);
         formPanel.add(clientCombo);
         formPanel.add(new JLabel("Лекарство:"));
         formPanel.add(medCombo);
@@ -78,13 +86,22 @@ public class SalePanel extends JPanel {
         buttonPanel.add(deleteButton);
         buttonPanel.add(clearButton);
 
-        JPanel searchPanel = new JPanel(new BorderLayout(6, 0));
-        searchPanel.add(new JLabel("Търси по клиент:"), BorderLayout.WEST);
-        searchPanel.add(searchField, BorderLayout.CENTER);
-        searchPanel.add(searchButton, BorderLayout.EAST);
+        JPanel searchPanel = new JPanel(new GridLayout(2, 2, 6, 6));
+        searchPanel.add(new JLabel("Име:"));
+        searchPanel.add(searchField);
+        searchPanel.add(new JLabel("Категория:"));
+        searchPanel.add(categorySearchCombo);
+
+        JPanel searchButtonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 4));
+        searchButtonPanel.add(searchButton);
+
+        JPanel topPanel = new JPanel(new BorderLayout(0, 4));
+        topPanel.add(searchPanel, BorderLayout.CENTER);
+        topPanel.add(searchButtonPanel, BorderLayout.SOUTH);
 
         JPanel leftPanel = new JPanel(new BorderLayout(0, 10));
-        leftPanel.add(searchPanel, BorderLayout.NORTH);
+        leftPanel.setPreferredSize(new Dimension(320, 0));
+        leftPanel.add(topPanel, BorderLayout.NORTH);
         leftPanel.add(formPanel, BorderLayout.CENTER);
         leftPanel.add(buttonPanel, BorderLayout.SOUTH);
 
@@ -108,13 +125,26 @@ public class SalePanel extends JPanel {
             medCombo.addItem(m);
     }
 
+    private void loadCategoryCombo() {
+        categorySearchCombo.addItem(new Category("Всички", ""));
+        for (Category c : categoryDAO.getAll()) {
+            categorySearchCombo.addItem(c);
+        }
+    }
+
     private void loadAll() {
         fillTable(dao.getAll());
     }
 
     private void search() {
-        String kw = searchField.getText().trim();
-        fillTable(kw.isEmpty() ? dao.getAll() : dao.searchByClientName(kw));
+        String firstName = searchField.getText().trim();
+        Category selected = (Category) categorySearchCombo.getSelectedItem();
+        String category = selected.getCategoryName().equals("Всички") ? "" : selected.getCategoryName();
+        if (firstName.isEmpty() && category.isEmpty()) {
+            fillTable(dao.getAll());
+        } else {
+            fillTable(dao.searchByClientNameAndCategory(firstName, category));
+        }
     }
 
     private void fillTable(List<Sale> list) {
@@ -122,6 +152,7 @@ public class SalePanel extends JPanel {
         for (Sale s : list) {
             tableModel.addRow(new Object[] {
                     s.getId(), s.getClientName(), s.getMedicationName(),
+                    s.getCategoryName(),
                     s.getSaleDate().toString(), s.getQuantity(),
                     String.format("%.2f", s.getTotalPrice()),
                     s.getPaymentMethod()
